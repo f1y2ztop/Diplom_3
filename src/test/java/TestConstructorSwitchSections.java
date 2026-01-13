@@ -41,21 +41,18 @@ public class TestConstructorSwitchSections {
         switch (sectionName) {
             case "Соусы":
                 mainPage.clickSaucesSection();
-                assertTrue("Вкладка 'Соусы' не активна",
-                        mainPage.isTabActive(mainPage.getSaucesTab()));
+                assertTrue("Вкладка 'Соусы' не активна", mainPage.isSaucesTabActive());
                 break;
 
             case "Начинки":
                 mainPage.clickFillingsSection();
-                assertTrue("Вкладка 'Начинки' не активна",
-                        mainPage.isTabActive(mainPage.getFillingsTab()));
+                assertTrue("Вкладка 'Начинки' не активна", mainPage.isFillingsTabActive());
                 break;
 
             case "Булки":
                 mainPage.clickFillingsSection();
                 mainPage.clickBunsSection();
-                assertTrue("Вкладка 'Булки' не активна",
-                        mainPage.isTabActive(mainPage.getBunsTab()));
+                assertTrue("Вкладка 'Булки' не активна", mainPage.isBunsTabActive());
                 break;
         }
     }

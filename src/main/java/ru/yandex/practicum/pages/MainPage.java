@@ -83,8 +83,18 @@ public class MainPage {
         return className.contains("tab_tab_type_current");
     }
 
-    public By getBunsTab() { return bunsTab; }
-    public By getSaucesTab() { return saucesTab; }
-    public By getFillingsTab() { return fillingsTab; }
+    @Step("Проверить, активен ли раздел 'Булки'")
+    public boolean isBunsTabActive() {
+        return isTabActive(bunsTab);
+    }
 
+    @Step("Проверить, активен ли раздел 'Соусы'")
+    public boolean isSaucesTabActive() {
+        return isTabActive(saucesTab);
+    }
+
+    @Step("Проверить, активен ли раздел 'Начинки'")
+    public boolean isFillingsTabActive() {
+        return isTabActive(fillingsTab);
+    }
 }
