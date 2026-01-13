@@ -1,3 +1,4 @@
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -5,29 +6,30 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import ru.yandex.practicum.pages.LoginPage;
+import ru.yandex.practicum.pages.MainPage;
 import ru.yandex.practicum.util.DataForTesting;
+import ru.yandex.practicum.util.LoginSteps;
+import ru.yandex.practicum.util.LoginType;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-@RunWith(Parameterized.class)
-public class TestUserLogin extends BaseTest{
+import static org.junit.Assert.assertTrue;
 
-    private final String entryName;
-    private final String startUrl;
-    private final By entryButtonLocator;
+@RunWith(Parameterized.class)
+public class TestUserLogin extends BaseTest {
+
+    private final String description;
+    private final LoginType loginType;
 
     private final String email = "yandex" + System.currentTimeMillis() + "@yandex.ru";
     private final String password = "validPassword";
-    private final String name = "Алексей";
 
-    public TestUserLogin(String entryName, String startUrl, By entryButtonLocator) {
-        this.startUrl = startUrl;
-        this.entryButtonLocator = entryButtonLocator;
-        this.entryName = entryName;
+    public TestUserLogin(String description, LoginType loginType) {
+        this.description = description;
+        this.loginType = loginType;
     }
 
     @Rule
@@ -39,27 +41,39 @@ public class TestUserLogin extends BaseTest{
     }
 
     @Before
-            public void setUp() throws InterruptedException {
+    public void setUp() {
         userSetUp(email);
     }
 
     @Test
     @DisplayName("Логин пользователя")
+    @Description("Проверка возможности входа в систему через различные точки входа: " +
+            "кнопка 'Войти в аккаунт' на главной, через 'Личный кабинет', " +
+            "со страницы регистрации и со страницы восстановления пароля")
     public void testLoginDiffButtons() {
         WebDriver driver = factory.getDriver();
-        driver.get(startUrl);
-        driver.findElement(entryButtonLocator).click();
+        LoginSteps loginSteps = new LoginSteps(driver);
         LoginPage loginPage = new LoginPage(driver);
+        MainPage mainPage = new MainPage(driver);
+
+        loginSteps.navigateToLogin(loginType);
+
         loginPage.fillEmailLoginField(email);
         loginPage.fillPasswordLoginPage(password);
         loginPage.loginButtonLoginPageClick();
+        assertTrue("Кнопка 'Оформить заказ' должна быть видна после успешного входа",
+                mainPage.isOrderButtonVisible());
     }
 
     @After
     public void tearDown() {
-        try {deleteUser(email, password);}
-        catch(Exception e){
-            System.out.println("Не удалось удалить пользователя из-за таймаута сервера.");
+        try {
+            if (factory.getDriver() != null) {
+                factory.getDriver().quit();
+            }
+        } finally {
+            // Очистка юзера пойдет после закрытия браузера
+            cleanUpUser(email, password);
         }
     }
 }

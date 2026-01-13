@@ -19,10 +19,17 @@ public class RegistrationPage {
 
     private static final By nameRegField = By.xpath(".//fieldset[1]//input");
     private static final By emailRegField = By.xpath(".//fieldset[2]//input");
-    private static final By passwordRegField = By.xpath(".//fieldset[3]//input");
+    private static final By passwordRegField = By.xpath(".//input[@name='Пароль']");
     private static final By registrationButton = By.xpath(".//button[text()='Зарегистрироваться']");
     public static final By loginPageLink = By.cssSelector(".Auth_link__1fOlj"); // Локатор идентичен для страницы forgot-password
     private static final By invalidPassword = By.xpath(".//p[text()='Некорректный пароль']");
+
+    @Step("Открыть страницу регистрации")
+            public void openRegPage() {
+        driver.get(EnvConfig.MAIN_URL + "register");
+        new WebDriverWait(driver, Duration.ofSeconds(EnvConfig.TIMEOUT))
+                .until(ExpectedConditions.elementToBeClickable(nameRegField));
+    }
 
     @Step("Регистрация. Заполнить поле 'Имя' значением: {name}")
     public void fillNameRegField(String name) {
@@ -44,7 +51,10 @@ public class RegistrationPage {
     public void registrationButtonClick() {
         driver.findElement(registrationButton).click();
     }
-
+    @Step("Кликнуть по ссылке на логин пользователя")
+    public void loginLinkClick() {
+        driver.findElement(loginPageLink).click();
+    }
     @Step("Проверка видимости ошибки пароля")
     public boolean isPasswordErrorDisplayed() {
         try {

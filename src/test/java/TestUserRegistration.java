@@ -1,3 +1,4 @@
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Rule;
@@ -40,6 +41,8 @@ public class TestUserRegistration extends BaseTest {
 
     @Test
     @DisplayName("Регистрация пользователя")
+    @Description("Проверка процесса регистрации пользователя: успешная регистрация при валидных данных" +
+            " и появление ошибки при слишком коротком пароле (менее 6 символов)")
     public void testUserRegistration() {
         WebDriver driver = factory.getDriver();
         var mainPage = new MainPage(driver);
@@ -65,7 +68,7 @@ public class TestUserRegistration extends BaseTest {
     public void tearDown() {
         try {
             if (expectedResult) {
-                deleteUser(email, password);
+                cleanUpUser(email, password);
             }
         } catch (Exception e) {
             System.out.println("Не удалось удалить пользователя из-за таймаута сервера.");

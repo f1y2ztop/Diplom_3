@@ -1,3 +1,4 @@
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,15 +32,31 @@ public class TestConstructorSwitchSections {
 
     @Test
     @DisplayName("Проверка перехода к разделам")
-    public void testConstructorSwitchSections() throws InterruptedException {
+    @Description("Проверяет, что при клике на вкладки 'Булки', 'Соусы' и 'Начинки'" +
+            "происходит переход к соответствующему разделу конструктора")
+    public void testConstructorSwitchSections() {
         WebDriver driver = factory.getDriver();
         MainPage mainPage = new MainPage(driver);
         mainPage.openMainPage();
-        if (sectionName.equals("Булки") || sectionName.equals("Соусы")) {
-            mainPage.sectionClick("Начинки");
+        switch (sectionName) {
+            case "Соусы":
+                mainPage.clickSaucesSection();
+                assertTrue("Вкладка 'Соусы' не активна",
+                        mainPage.isTabActive(mainPage.getSaucesTab()));
+                break;
+
+            case "Начинки":
+                mainPage.clickFillingsSection();
+                assertTrue("Вкладка 'Начинки' не активна",
+                        mainPage.isTabActive(mainPage.getFillingsTab()));
+                break;
+
+            case "Булки":
+                mainPage.clickFillingsSection();
+                mainPage.clickBunsSection();
+                assertTrue("Вкладка 'Булки' не активна",
+                        mainPage.isTabActive(mainPage.getBunsTab()));
+                break;
         }
-        mainPage.sectionClick(sectionName);
-        assertTrue("Заголовок раздела" + sectionName + " должен быть виден",
-                mainPage.isSectionVisible(sectionName));
     }
 }

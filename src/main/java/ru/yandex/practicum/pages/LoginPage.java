@@ -16,8 +16,8 @@ public class LoginPage {
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
-    private static final By emailLoginField = By.xpath(".//fieldset[1]//input");
-    private static final By passwordLoginField = By.xpath(".//fieldset[2]//input");
+    private static final By emailLoginField = By.xpath(".//input[@name='name']");
+    private static final By passwordLoginField = By.xpath(".//input[@name='Пароль']");
     private static final By loginButtonLoginPage = By.xpath(".//button[text()='Войти']");
     private static final By registrationLink = By.xpath(".//a[text()='Зарегистрироваться']");
 

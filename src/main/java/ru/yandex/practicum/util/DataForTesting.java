@@ -1,8 +1,5 @@
 package ru.yandex.practicum.util;
 
-import ru.yandex.practicum.pages.MainPage;
-import ru.yandex.practicum.pages.RegistrationPage;
-
 public class DataForTesting {
 
     public static final Object[][]
@@ -13,10 +10,10 @@ public class DataForTesting {
 
     public static final Object[][]
                     loginEntranceData = {
-            {"Вход через личный кабинет", EnvConfig.MAIN_URL, MainPage.personalAccButtonMainPage},
-            {"Вход через кнопку Войти в аккаунт", EnvConfig.MAIN_URL, MainPage.loginAccButtonMainPage},
-            {"Вход со страницы регистрации", EnvConfig.MAIN_URL + "register", RegistrationPage.loginPageLink},
-            {"Вход со страницы забыли пароль", EnvConfig.MAIN_URL + "forgot-password", RegistrationPage.loginPageLink}
+            {"Кнопка 'Войти в аккаунт' на главной", LoginType.MAIN_BUTTON},
+            {"Кнопка 'Личный Кабинет' на главной", LoginType.PERSONAL_CABINET},
+            {"Ссылка 'Войти' в форме регистрации", LoginType.REGISTRATION_FORM},
+            {"Ссылка 'Войти' в форме восстановления пароля", LoginType.FORGOT_PASSWORD_FORM}
     };
 
     public static final Object[][]

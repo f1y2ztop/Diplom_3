@@ -19,7 +19,14 @@ public class MainPage {
 
     public static final By loginAccButtonMainPage = By.xpath(".//button[text()='Войти в аккаунт']");
     public static final By personalAccButtonMainPage = By.xpath(".//p[text()='Личный Кабинет']");
-    private static final By bunImg = By.xpath("//img[@alt='Флюоресцентная булка R2-D3']");
+    private static final By bunImg = By.xpath(".//img[@alt='Флюоресцентная булка R2-D3']");
+    private static final By orderButton = By.xpath(".//button[text()='Оформить заказ']");
+
+    private final By bunsTab = By.xpath("//div[span[text()='Булки']]");
+    private final By saucesTab = By.xpath("//div[span[text()='Соусы']]");
+    private final By fillingsTab = By.xpath("//div[span[text()='Начинки']]");
+
+    private final String activeClass = "tab_tab_type_current";
 
     @Step("Открыть главную страницу")
     public void openMainPage() {
@@ -33,20 +40,51 @@ public class MainPage {
         driver.findElement(loginAccButtonMainPage).click();
     }
 
+    @Step("Главная страница. Кликнуть по кнопке 'Личный кабинет'")
+    public void personalAccButtonMainPageClick() {
+        driver.findElement(personalAccButtonMainPage).click();
+    }
+
     @Step("Клик по разделу {sectionName} ")
     public void sectionClick(String sectionName) {
         By section = By.xpath(String.format(".//span[text()='%s']", sectionName));
         driver.findElement(section).click();
     }
 
-    @Step("Проверка видимости заголовка раздела {sectionName}")
-    public boolean isSectionVisible(String sectionName) {
-        By sectionHeader = By.xpath(String.format(".//h2[text()='%s']", sectionName));
+    @Step("Проверка видимости кнопки 'Оформить заказ'")
+    public boolean isOrderButtonVisible() {
         try {
-            return new WebDriverWait(driver, Duration.ofSeconds(EnvConfig.TIMEOUT))
-                    .until(ExpectedConditions.visibilityOfElementLocated(sectionHeader)).isDisplayed();
+            new WebDriverWait(driver, Duration.ofSeconds(EnvConfig.TIMEOUT))
+                    .until(ExpectedConditions.visibilityOfElementLocated(orderButton));
+            return true;
         } catch (TimeoutException e) {
             return false;
         }
     }
+
+    @Step("Клик на раздел 'Булки'")
+    public void clickBunsSection() {
+        driver.findElement(bunsTab).click();
+    }
+
+    @Step("Клик на раздел 'Соусы'")
+    public void clickSaucesSection() {
+        driver.findElement(saucesTab).click();
+    }
+
+    @Step("Клик на раздел 'Начинки'")
+    public void clickFillingsSection() {
+        driver.findElement(fillingsTab).click();
+    }
+
+    @Step("Проверка активности вкладки через атрибут class")
+    public boolean isTabActive(By tabLocator) {
+        String className = driver.findElement(tabLocator).getAttribute("class");
+        return className.contains("tab_tab_type_current");
+    }
+
+    public By getBunsTab() { return bunsTab; }
+    public By getSaucesTab() { return saucesTab; }
+    public By getFillingsTab() { return fillingsTab; }
+
 }
